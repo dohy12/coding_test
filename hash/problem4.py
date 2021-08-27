@@ -1,3 +1,6 @@
+# https://programmers.co.kr/learn/courses/30/lessons/42579
+# 프로그래머스 코딩테스트 연습 > 해시 > 베스트앨범
+
 class GenresList:
     _list_cnt = 0
     _genresName = ""
