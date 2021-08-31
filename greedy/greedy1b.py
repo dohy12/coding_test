@@ -7,12 +7,15 @@ reserve = [7, 5, 2, 9, 6]
 
 d = {k:1 for k in lost}
 reserve.sort()
+trash = {}
 for i in range(len(reserve)):
     if (d.get(reserve[i],0)==1):
         d.pop(reserve[i])
-        reserve.pop(i)       
+        trash[reserve[i]] = 1
 
 for i in reserve:
+    if (trash.get(i,0)==1):
+        continue
     if (d.get(i-1, 0)==1):
         d.pop(i-1)    
     elif (d.get(i+1, 0)==1):
