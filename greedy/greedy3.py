@@ -9,8 +9,7 @@ def solution(n, costs):
     d = {} 
 
     for cost in costs:        
-        d[(cost[0],cost[1])] = cost[2]
-        d[(cost[1],cost[0])] = cost[2]
+        d[(cost[0],cost[1])] = d[(cost[1],cost[0])] = cost[2]
 
     answer = 0
     while len(unlinked) > 0:
