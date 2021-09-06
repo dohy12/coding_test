@@ -4,21 +4,23 @@
 import heapq
 
 def solution(scoville, K):
+    answer = 0
+
     heapq.heapify(scoville)
-    
-    answer=0
+
     while True:
-        if scoville[0]<K:
-            if len(scoville)>1:
-                answer +=1
-                food = heapq.heappop(scoville) + heapq.heappop(scoville)*2
-                heapq.heappush(scoville, food)
-            else:
-                answer = -1
-                break
-        else:
+        min1 = heapq.heappop(scoville)
+        if min1 >= K:
             break
-    
+        elif len(scoville)==0:
+            answer = -1
+            break
+        
+        min2 = heapq.heappop(scoville)
+        new_scoville = min1 + min2*2
+        heapq.heappush(scoville, new_scoville)
+        answer+=1
+
     return answer
 
 scoville = [1, 2, 3, 9, 10, 12]

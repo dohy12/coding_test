@@ -1,6 +1,8 @@
 # set은 집합을 의미한다
 A = set([4,5,1])
 B = set('abc')
+
+A.add(3)
 print(A)
 print(B)
 
@@ -8,6 +10,7 @@ A = set('abbbc')
 print(A)
 # 중복을 
 
+# set추가
 A.update([5,6,7,8,9])
 print(A)
 
