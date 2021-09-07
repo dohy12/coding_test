@@ -7,10 +7,10 @@ ch = -1
 h = {}
 
 def calc(cnt, N, number):    
-    global ch
+    global ch # 글로벌 변수 쓰려면 가져와야함
     s = set()
     if h.get(cnt, []) == []:
-        s.add(int(''.join(['1']*cnt))*N)
+        s.add(int(str(1)*cnt)*N) # int(str(1)*cnt)*N로 대체 가능
         for i in range(cnt-1, math.ceil(cnt/2)-1,-1):
             for j in calc(i, N, number):
                 for k in calc(cnt-i, N, number):                
@@ -41,11 +41,11 @@ def solution(N, number):
     global ch
     for i in range(1,9):
         if(ch == -1):
-            print(calc(i,N,number))
+            calc(i,N,number)
         else :
             break
 
     answer = ch
     return answer
 
-print(solution(5,12))
+print(solution(5,100))
