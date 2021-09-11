@@ -1,6 +1,6 @@
 # https://programmers.co.kr/learn/courses/30/lessons/42897
 # 프로그래머스 코팅테스트 연습 > 동적계획법(Dynamic Programming) > 도둑질
-# 시간초과
+# 시간초과 -> hash를 list로 바꾸어 해결
 
 def solution(money):    
     n = len(money)   

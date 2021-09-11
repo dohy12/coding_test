@@ -10,12 +10,12 @@ def solution(numbers, target):
             l2.append(l[i] + n)
             l2.append(l[i] - n)
         l = l2
+
     cnt =0
     for n in l:
         if n == target:
             cnt +=1
-
-    print(l)
+            
     answer = cnt
     return answer
 

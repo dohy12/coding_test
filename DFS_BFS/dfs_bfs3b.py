@@ -2,7 +2,7 @@
 # 프로그래머스 코팅테스트 연습 > 깊이/너비 우선 탐색(DFS/BFS) > 단어 변환
 # '김다함' 님 풀이 
 
-from collections import deque
+from collections import deque # 큐를 사용하려면 필요함
 
 def get_adjacent(current, words):
     for word in words:
@@ -22,7 +22,7 @@ def solution(begin, target, words):
         current = queue.popleft()
 
         for next_word in get_adjacent(current, words):
-            if next_word not in dist:
+            if next_word not in dist: # ★ not in ★ 
                 dist[next_word] = dist[current] + 1
                 queue.append(next_word)
 

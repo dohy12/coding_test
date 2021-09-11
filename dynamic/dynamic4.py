@@ -1,5 +1,6 @@
 # https://programmers.co.kr/learn/courses/30/lessons/42897
 # 프로그래머스 코팅테스트 연습 > 동적계획법(Dynamic Programming) > 도둑질
+# 런타임 오류 발생 (global 변수를 함부로 쓰지 말자)
 
 h = {}
 ml = []
@@ -21,7 +22,6 @@ def solution(money):
 
     h[(0,1)] = money[0]
     h[(1,1)] = 0
-
     h[(0,0)] = 0
 
     n = len(money)   

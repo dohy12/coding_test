@@ -1,6 +1,6 @@
 # https://programmers.co.kr/learn/courses/30/lessons/43163
 # 프로그래머스 코팅테스트 연습 > 깊이/너비 우선 탐색(DFS/BFS) > 단어 변환
-# zip, generator, deque 연습용 
+# zip, generator(X), deque 연습용 
 
 from collections import deque
 
@@ -18,7 +18,6 @@ def solution(begin, target, words):
                     if (i!=j):
                         cnt+=1
                 if cnt == 1:
-                    print(ch_w,w)
                     queue.append(w)
                     used[idx]=1
                     h[w] = h[ch_w] + 1

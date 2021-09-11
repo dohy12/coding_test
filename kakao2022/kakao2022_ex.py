@@ -6,11 +6,11 @@ def solution(v):
         h_y[ch[1]] = h_y.get(ch[1],0) + 1
     
     x = -1
-    for k,vl in zip(h_x.keys(), h_x.values())
+    for k,vl in zip(h_x.keys(), h_x.values()):
         if vl==1 :
             x = k
     y = -1
-    for k,vl in zip(h_y.keys(), h_y.values())
+    for k,vl in zip(h_y.keys(), h_y.values()):
         if vl==1 :
             y = k
     answer = [x,y]

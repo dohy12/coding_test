@@ -24,6 +24,7 @@ def solution(orders, course):
             rs_l.append(st)
     rs_l.sort()
     return rs_l
+    
 orders = ["ABCFG", "AC", "CDE", "ACDE", "BCFG", "ACDEH"]
 course = [2,3,4]
 print(solution(orders, course))

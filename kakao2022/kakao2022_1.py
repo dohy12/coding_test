@@ -7,7 +7,6 @@ def solution(id_list, report, num):
     for idx, u_id in enumerate(id_list):
         h[u_id] = idx
 
-    print(h)
 
     for r in report:
         r_l = r.split()
@@ -16,8 +15,7 @@ def solution(id_list, report, num):
             reported_l[ h[r_l[1]] ].append(r_l[0])
     
     answer = [0 for x in id_list]
-    print(reported_l)
-    for idx,l in enumerate(reported_l):
+    for l in reported_l:
         if (len(l)>=num):
             for em in l:
                 answer[h[em]]+=1

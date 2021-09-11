@@ -8,7 +8,6 @@ def solution(n, k):
     st = "22"
     st = st.replace('0',' ')
     l = st.split()
-    print(l)
 
     rs = 0
     for n in l:
@@ -17,7 +16,6 @@ def solution(n, k):
         if num!=1:
             ch = 0
             for i in range(2,math.ceil(num/2)+1):
-                print (i)
                 if num%i == 0:
                     ch = 1
 

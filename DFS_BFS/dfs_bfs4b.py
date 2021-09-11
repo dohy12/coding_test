@@ -1,6 +1,6 @@
 # https://programmers.co.kr/learn/courses/30/lessons/43164
 # 프로그래머스 코팅테스트 연습 > 깊이/너비 우선 탐색(DFS/BFS) > 여행경로
-# 강의 내용 듣고 짜본 코드
+# 강의 내용
 
 from collections import deque
 import heapq

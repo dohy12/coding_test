@@ -31,11 +31,7 @@ def solution(info, edges):
                 tmp_r = list(route_h[p_idx][2])
                 tmp_r.append(c_r)
                 route_h[r_idx] = [route_h[p_idx][0], route_h[p_idx][1], tmp_r]
-                stack.append(r_idx)           
-
-        else :
-            continue
-
+                stack.append(r_idx)          
 
     answer = max_sheep
     return answer

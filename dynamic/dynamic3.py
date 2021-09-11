@@ -19,13 +19,10 @@ def route(x, y):
         u_pos = (x,y-1) 
         l_pos = (x-1,y)
 
-        maxR = route(u_pos[0],u_pos[1]) + route(l_pos[0],l_pos[1])
+        maxR = (route(u_pos[0],u_pos[1]) + route(l_pos[0],l_pos[1]))%1000000007
         h[(x,y)] = maxR
 
     return maxR
-
-
-
 
 def solution(m, n, puddles):
     global h,p
