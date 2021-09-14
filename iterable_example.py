@@ -2,7 +2,7 @@
 #iterable 한 타입
 var_list = [1, 3, 5, 7]
 
-var_dict = {"a":1, "b",1}
+var_dict = {"a":1, "b":1}
 
 var_set = {1, 3}
 
