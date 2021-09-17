@@ -1,5 +1,6 @@
 import json
 import requests
+import time
 
 host = "http://127.0.0.1:8000"
 
@@ -46,7 +47,8 @@ def solution(user_key):
     call_in_elevator = {}
 
     i = 0
-    while i<30:        
+    while i<40:    
+        print(i)    
         if getCall(token, call_info, call_list):                    
             break        
         i+=1
@@ -58,64 +60,99 @@ def solution(user_key):
         
         passengers_id = [x["id"] for x in elevators[0]["passengers"]]
 
-        if elevator_look == 0: #UU
-            tmp = 0
-            for call_id in call_list:
-                call = call_info[call_id]
-                if call["upCheck"] and call["start"] > elevators[0]["floor"]:
-                    tmp = 1
-                if call["upCheck"] and call["start"] == elevators[0]["floor"]:
-                    if call_id not in passengers_id:
-                        enter_l.append(call_id)
-
-            if tmp == 0:
-                elevator_look = 1
-                continue
-            
-
-        elif elevator_look == 1: #UD
-            tmp = 0
-            for call_id in call_list:
-                call = call_info[call_id]
-                if (not call["upCheck"]) and call["start"] > elevators[0]["floor"]:
-                    tmp = 1
-                if (not call["upCheck"]) and call["start"] == elevators[0]["floor"]:
-                    if call_id not in passengers_id:
-                        enter_l.append(call_id)
-
-            if tmp == 0:
-                elevator_look = 2
-                continue
-        
-
-        elif elevator_look == 2: #DD
-            tmp = 0
-            for call_id in call_list:
-                call = call_info[call_id]
-                if (not call["upCheck"]) and call["start"] < elevators[0]["floor"]:
-                    tmp = 1
-                if (not call["upCheck"]) and call["start"] == elevators[0]["floor"]:
-                    if call_id not in passengers_id:
-                        enter_l.append(call_id)
-
-            if tmp == 0:
-                elevator_look = 3
-                continue
-
-
-        elif elevator_look == 3: #DU
-            tmp = 0
-            for call_id in call_list:
-                call = call_info[call_id]
-                if (call["upCheck"]) and call["start"] < elevators[0]["floor"]:
-                    tmp = 1
-                if (call["upCheck"]) and call["start"] == elevators[0]["floor"]:
-                    if call_id not in passengers_id:
-                        enter_l.append(call_id)
-
-            if tmp == 0:
+        if len(passengers_id)>0:
+            call = call_info[passengers_id[0]]
+            if call["upCheck"]: # 올라갈경우
                 elevator_look = 0
-                continue
+                for call_id in call_list:
+                    tmp = call_info[call_id]
+                    if tmp["upCheck"] and tmp["start"] == elevators[0]["floor"]:
+                        if call_id not in passengers_id:
+                            enter_l.append(call_id)
+            
+            else : # 내려갈 경우
+                elevator_look = 2
+                for call_id in call_list:
+                    tmp = call_info[call_id]
+                    if (not tmp["upCheck"]) and tmp["start"] == elevators[0]["floor"]:
+                        if call_id not in passengers_id:
+                            enter_l.append(call_id)       
+        else:
+            while True:
+                if elevator_look == 0: #UU
+                    tmp = 0
+                    for call_id in call_list:                        
+                        call = call_info[call_id]
+                        if call["upCheck"] and call["start"] >= elevators[0]["floor"]:
+                            if call_id not in passengers_id:
+                                tmp = 1
+                        if call["upCheck"] and call["start"] == elevators[0]["floor"]:
+                            if call_id not in passengers_id:
+                                enter_l.append(call_id)
+
+                    if tmp == 0:
+                        elevator_look = 1
+                    else:
+                        break
+                    
+
+                elif elevator_look == 1: #UD
+                    tmp = 0
+                    for call_id in call_list:
+                        call = call_info[call_id]
+                        if (not call["upCheck"]) and call["start"] > elevators[0]["floor"]:
+                            if call_id not in passengers_id:
+                                tmp = 1
+                        if (not call["upCheck"]) and call["start"] == elevators[0]["floor"]:
+                            if call_id not in passengers_id:
+                                enter_l.append(call_id)
+
+                        if call["upCheck"] and call["start"] >= elevators[0]["floor"]:
+                            elevator_look = 0
+                            continue
+
+                    if tmp == 0:
+                        elevator_look = 2
+                    else:
+                        break
+                
+
+                elif elevator_look == 2: #DD
+                    tmp = 0
+                    for call_id in call_list:
+                        call = call_info[call_id]
+                        if (not call["upCheck"]) and call["start"] <= elevators[0]["floor"]:
+                            if call_id not in passengers_id:
+                                tmp = 1
+                        if (not call["upCheck"]) and call["start"] == elevators[0]["floor"]:
+                            if call_id not in passengers_id:
+                                enter_l.append(call_id)
+
+                    if tmp == 0:
+                        elevator_look = 3
+                    else:
+                        break
+
+
+                elif elevator_look == 3: #DU
+                    tmp = 0
+                    for call_id in call_list:
+                        call = call_info[call_id]
+                        if (call["upCheck"]) and call["start"] < elevators[0]["floor"]:
+                            if call_id not in passengers_id:
+                                tmp = 1
+                        if (call["upCheck"]) and call["start"] == elevators[0]["floor"]:
+                            if call_id not in passengers_id:
+                                enter_l.append(call_id)
+
+                        if (not call["upCheck"]) and call["start"] <= elevators[0]["floor"]:
+                            elevator_look == 2
+                            continue
+
+                    if tmp == 0:
+                        elevator_look = 0
+                    else:
+                        break
         
         # ------------------------------------------------------
         if elevators[0]['status'] == 'STOPPED':          
@@ -150,44 +187,9 @@ def solution(user_key):
             elif len(exit_l)>0:
                 action(token, {"commands":[{"elevator_id":0, "command":"EXIT", "call_ids":exit_l}]} )   
                 for c in exit_l:
-                    call_list.remove(c)  
-
+                    call_list.remove(c)                  
             else:
                 action(token, {"commands":[{"elevator_id":0, "command":"CLOSE"}]} )
-
-
-# enter_l = []
-# out_l = []
-
-# elevator_look = TRUE 
-
-# 탈사람 내릴 사람 목록 찾기
-# for call in calls:
-#   if(elevator_look): #엘베가 오르고 있을경우
-
-
-# 엘베 상태
-# 1) 엘베 stopped
-#   if) 현재 층에 탈 사람 존재 and 최대치 오버 X
-#       action open
-#   if) 현재 층에 내릴 사람 존재
-#       action open
-
-
-# 2) 엘베 upward
-#   if) 현재 층에 내릴 사람 존재 or 현재 층에 탈 사람 존재
-#       action stop
-#   else:
-#       action up 
-
-# 3) 엘베 downward
-
-# 4) 엘베 opended
-#   if) 현재 층에 내릴 사람 존재
-#       action Exit
-#   elif) 현재 층에 탈 사람 존재
-#       action Enter
-#   else: 내릴 사람도 탈 사람도 없을때:
-#       action close
+        print("----------------------")
 
 solution("tester")
