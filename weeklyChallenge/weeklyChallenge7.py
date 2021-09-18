@@ -17,7 +17,7 @@ def solution(enter, leave):
 
             for s in sets:
                 rs[s-1] +=1 
-            print(e_cnt)
+                
             rs[enter[e_cnt-1]-1] = len(sets)
         else:
             l_cnt +=1

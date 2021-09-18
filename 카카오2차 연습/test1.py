@@ -11,9 +11,8 @@ def onCall(token):
     return requests.get(host + "/oncalls", headers = headers).json()
 
 def action(token, commands):
-    print(commands)
     headers = {"X-Auth-Token":token}
-    print(requests.post(host + "/action", headers = headers, json=commands))
+    requests.post(host + "/action", headers = headers, json=commands)
     return 
 
 
@@ -34,9 +33,8 @@ def getCall(token, call_info, call_list):
 def solution(user_key):
     global host, elevators
     #start
-    problem_id = 0
+    problem_id = 1
     elevators_num = 1
-    print("hi?2")
     res = requests.post(host+"/start"+"/"+user_key+"/"+str(problem_id)+"/"+str(elevators_num)).json()
     token = res["token"]
 
@@ -47,13 +45,12 @@ def solution(user_key):
     call_in_elevator = {}
 
     i = 0
-    while i<40:    
+    while True:   
         print(i)    
-        if getCall(token, call_info, call_list):                    
+        if getCall(token, call_info, call_list): 
+            print("finished")                   
             break        
         i+=1
-        print(elevator_look, elevators)
-        print("calls:",[(k,v) for k,v in zip(call_info.keys(), call_info.values()) if k in call_list])
 
         enter_l = []
         exit_l  = [x["id"] for x in elevators[0]["passengers"] if call_info[x["id"]]["end"] == elevators[0]["floor"]]
@@ -64,20 +61,23 @@ def solution(user_key):
             call = call_info[passengers_id[0]]
             if call["upCheck"]: # 올라갈경우
                 elevator_look = 0
-                for call_id in call_list:
-                    tmp = call_info[call_id]
-                    if tmp["upCheck"] and tmp["start"] == elevators[0]["floor"]:
-                        if call_id not in passengers_id:
-                            enter_l.append(call_id)
+                if len(passengers_id) < 8:
+                    for call_id in call_list:
+                        tmp = call_info[call_id]
+                        if tmp["upCheck"] and tmp["start"] == elevators[0]["floor"]:
+                            if call_id not in passengers_id:
+                                enter_l.append(call_id)
             
             else : # 내려갈 경우
                 elevator_look = 2
-                for call_id in call_list:
-                    tmp = call_info[call_id]
-                    if (not tmp["upCheck"]) and tmp["start"] == elevators[0]["floor"]:
-                        if call_id not in passengers_id:
-                            enter_l.append(call_id)       
+                if len(passengers_id) < 8:
+                    for call_id in call_list:
+                        tmp = call_info[call_id]
+                        if (not tmp["upCheck"]) and tmp["start"] == elevators[0]["floor"]:
+                            if call_id not in passengers_id:
+                                enter_l.append(call_id)       
         else:
+            
             while True:
                 if elevator_look == 0: #UU
                     tmp = 0
@@ -154,6 +154,7 @@ def solution(user_key):
                     else:
                         break
         
+
         # ------------------------------------------------------
         if elevators[0]['status'] == 'STOPPED':          
 
@@ -164,6 +165,7 @@ def solution(user_key):
             else:
                 action(token, {"commands":[{"elevator_id":0, "command":"DOWN"}]} )
 
+
         elif elevators[0]['status'] == 'UPWARD':
             if len(enter_l)>0 or len(exit_l)>0:
                 action(token, {"commands":[{"elevator_id":0, "command":"STOP"}]} )
@@ -172,6 +174,7 @@ def solution(user_key):
             else:
                 action(token, {"commands":[{"elevator_id":0, "command":"UP"}]} )
 
+
         elif elevators[0]['status'] == 'DOWNWARD':
             if len(enter_l)>0 or len(exit_l)>0:
                 action(token, {"commands":[{"elevator_id":0, "command":"STOP"}]} )
@@ -179,6 +182,7 @@ def solution(user_key):
                 action(token, {"commands":[{"elevator_id":0, "command":"STOP"}]} )
             else:
                 action(token, {"commands":[{"elevator_id":0, "command":"DOWN"}]} )
+
 
         else: #엘베 opended   
             if  len(enter_l)>0:
@@ -190,6 +194,5 @@ def solution(user_key):
                     call_list.remove(c)                  
             else:
                 action(token, {"commands":[{"elevator_id":0, "command":"CLOSE"}]} )
-        print("----------------------")
 
 solution("tester")
