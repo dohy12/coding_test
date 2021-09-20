@@ -22,3 +22,6 @@ print(dq)
 dq.appendleft(3)  # list의 insert(0, x)보다 월등히 성능이 좋다
 dq.appendleft(2)
 print(dq)
+
+dq += [2,3,4,5]
+print(dq[:3])
