@@ -19,10 +19,7 @@ def binarySearch(left, right, times, n, maxRight):
     else :
         return binarySearch(left, mid-1, times, n , mid)   
 
-
-
-
-n = 7
+n = 6
 times = [1, 6]
 
 
