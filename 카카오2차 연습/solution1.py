@@ -26,7 +26,10 @@ def getScore(auth_key):
 def locIDtoPos(location_id):
     return (int(location_id/5),location_id%5)
 
+def isTruckWorking(truck_id):
+    global truck_cmd_stack_real
 
+    return len(truck_cmd_stack_real)>0
 
 # 0: 6초간 아무것도 하지 않음
 # 1: 위로 한 칸 이동
@@ -58,7 +61,13 @@ def movTruck(truck, arrive_id):
             cmd += [3 for x in range(abs(mov[1]))]
     return cmd
     
+
+truck_cmd_stack_real = [[] for x in range(5)]
+truck_cmds_stack = [[] for x in range(5)]    
 def solution1():
+    global truck_cmd_stack_real
+    global truck_cmds_stack
+
     auth_key = start()
     print(auth_key)
 
@@ -66,7 +75,7 @@ def solution1():
 
     trucks = getTruckInfo(auth_key)["trucks"]
     print(trucks)
-    truck_cmds_stack = [[] for x in range(5)]
+    
 
     truck_origins = [6,8,16,17,12]
     # 각자 기본 위치로
@@ -93,14 +102,46 @@ def solution1():
             cmds.append({"truck_id":i, "command":truck_cmds_stack[i][:10]})
             truck_cmds_stack[i] = truck_cmds_stack[i][10:]
         
-        print(cmds)
         res = putSimpulate(auth_key,cmds)
-        print(res)
         
-        print(getLocationInfo(auth_key))
+        locations = getLocationInfo(auth_key)
+
+        for location in locations["locations"]:
+            if location['located_bikes_count']<=2:          
+
+                truck_list = place_to_truck(location['id']) # 관리하는 트럭 아이디 리스트
+
+                work_truck_id = -1 # 일 시킬 트럭 id
+                work_cnt = 999
+                for t in truck_list:
+                    if len(truck_cmd_stack_real)<work_cnt:
+                        work_cnt = len(truck_cmd_stack_real)
+                        work_truck_id = t # 가장 일 안하고 있는 트럭
+                
+                place_list = truck_to_place(t) # 현재 선택된 트럭이 관리하는 영역 list
+                
+                bike_place_list = sorted([(x["id"],x["located_bikes_count"]) for x in locations["locations"] if x["id"] in place_list],key=lambda x: x[1],reverse = True) 
+                bike_needs = 4 - location['located_bikes_count'] # 부족한 바이크
+                
+                cnt = 0
+                for b in bike_place_list:
+                    if bike_needs == 0:
+                        break
+                    getBikes = min(bike_needs, b[1] - 4)
+                    if getBikes>0:
+                        cnt += getBikes
+                        bike_needs += getBikes
+                        locations["locations"][b[0]]['located_bikes_count'] -= getBikes
+                        truck_cmd_stack_real.append(("mov",b[0]),("load",getBikes))
+
+                if bike_needs>0:
+                    
+                
+                if cnt>0:
+                    truck_cmd_stack_real.append(("mov",location["id"]),("put", cnt))
+
 
         trucks = getTruckInfo(auth_key)["trucks"]
-        print(trucks)
 
         if res["status"]=="finished":
             print(getScore(auth_key))

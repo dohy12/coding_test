@@ -97,7 +97,7 @@ def checkGameResult(results, mmrs, abuser_list, abuser_point, turn):
         mmrs[loser]  += -calcMMR(taken, turn)
         if taken <=10:
             abuser_point[winner] +=1
-            if abuser_point[loser] > 8:
+            if abuser_point[loser] > 9:
                 abuser_list.append(loser)
             
     return mmrs

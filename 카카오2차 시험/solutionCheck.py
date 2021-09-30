@@ -91,7 +91,6 @@ def sol1():
     auth_key = "f0f22c31-824b-43f8-9770-04dedd590931"
     print(putMatch(auth_key,[]))
     print(getScore(auth_key))
-    print(getUserInfo(auth_key))
 
     return 1
 

@@ -15,8 +15,6 @@ for idx in range(3):
             block[call[0]][0] +=1
             block[call[1]][1] +=1
 
-
-
 print("대여")
 for i in range(60):
     st = ""

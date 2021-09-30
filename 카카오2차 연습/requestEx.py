@@ -37,7 +37,6 @@ res = requests.post(host + '/action', json=data , headers=header).json()
 res = requests.post(host + '/action', json=data , headers=header).json()
 res = requests.post(host + '/action', json=data , headers=header).json()
 res = requests.post(host + '/action', json=data , headers=header).json()
-print(res)
 
 res = json.loads(requests.get(host + '/oncalls', headers={'X-Auth-Token': token}).text)
 print(res)

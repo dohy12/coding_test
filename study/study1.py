@@ -22,5 +22,4 @@ def binarySearch(left, right, times, n, maxRight):
 n = 6
 times = [1, 6]
 
-
 print(solution(n, times))

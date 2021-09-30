@@ -1,6 +1,8 @@
 # https://programmers.co.kr/learn/courses/30/lessons/49189
 # 코딩테스트 > 그래프 > 가장 먼 노드    
 
+# bfs 응용
+
 from collections import deque
 
 def solution(n, edge):
